@@ -11,7 +11,7 @@ spec:
   # Source of the application manifests
   source:
     repoURL: https://github.com/orvindemsy/eks-practice-od.git
-    targetRevision: master
+    targetRevision: main
     path: k8s/guestbook
 
     directory:
