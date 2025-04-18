@@ -1,0 +1,64 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: argo-workflows-helm
+  namespace: argocd
+spec:
+  generators:
+  - list:
+      elements:
+      - cluster_name: od-test
+        charts_repo_url: https://charts.bitnami.com/bitnami
+        # charts_repo_url: oci://registry-1.docker.io/bitnamicharts
+        # charts_repo_url: oci://registry-1.docker.io/bitnamicharts/argo-workflows
+        charts_target_version: "5.3.10"
+        # charts_repo_url: registry-1.docker.io
+        # charts_target_version: "11.1.8"
+        app_version: 3.4.9
+        # app_version: 3.6.4
+        # chart: bitnamicharts/argo-workflows
+        chart_name: argo-workflows
+
+  template:
+    metadata:
+      name: 'appset-{{cluster_name}}-argo-workflows-helm'
+    spec:
+      project: default
+
+      sources:
+       # for values.yaml
+       - repoURL: https://github.com/orvindemsy/eks-practice-od.git
+         targetRevision: main
+         ref: infrarepo
+       # helm chart
+       - repoURL: '{{charts_repo_url}}'
+         targetRevision: '{{charts_target_version}}'
+        #  chart: bitnamicharts/argo-workflows
+        #  chart: argo-workflows
+         chart: '{{chart_name}}'
+         helm:
+          version: v3
+          releaseName: argo-workflows
+          valueFiles:
+          - $infrarepo/helm-values/argowf/{{app_version}}/values.yaml
+
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: argo
+
+      syncPolicy:
+        #automated:
+        #  prune: true
+        #  selfHeal: true
+        #  allowEmpty: false
+        syncOptions:
+        - Validate=false
+        - CreateNamespace=true
+        - PrunePropagationPolicy=foreground
+        - PruneLast=true
+        retry:
+          limit: 5
+          backoff:
+            duration: 5s
+            factor: 2
+            maxDuration: 3m
