@@ -10,7 +10,7 @@ spec:
 
   # Source of the application manifests
   source:
-    repoURL: https://github.com/orvindemsy/argocd-example-apps.git
+    repoURL: https://github.com/orvindemsy/eks-practice-od.git
     targetRevision: master
     path: k8s/guestbook
 
