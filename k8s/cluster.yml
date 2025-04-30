@@ -13,9 +13,9 @@ autoModeConfig:
 
 nodeGroups:
   - name: ng-od-1
-    instanceType: t2.small
+    instanceType: t2.medium
     desiredCapacity: 2
 
   - name: ng-od-2
-    instanceType: t3a.small
+    instanceType: t3a.medium
     desiredCapacity: 1
