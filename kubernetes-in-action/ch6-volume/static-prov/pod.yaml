@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app-with-ebs
+  namespace: argo
+spec:
+  containers:
+    - name: app
+      image: nginx
+      volumeMounts:
+        - name: ebs-storage
+          mountPath: /data
+  volumes:
+    - name: ebs-storage
+      persistentVolumeClaim:
+        claimName: ebs-static-pvc  # Matches the PVC name
