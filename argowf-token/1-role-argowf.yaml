@@ -1,0 +1,9 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: argo
+  name: argowf-helm-role
+rules:
+- apiGroups: [""] # "" indicates the core API group
+  resources: ["workflows.argoproj.io"]
+  verbs: ["update", "list"]
