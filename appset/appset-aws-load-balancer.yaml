@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: argo-workflows-helm
+  name: aws-load-balancer-controller
   namespace: argocd
 spec:
   generators:
   - list:
       elements:
       - cluster_name: od-test
-        charts_repo_url: https://charts.bitnami.com/bitnami
+        charts_repo_url: https://aws.github.io/eks-charts
         charts_target_version: "1.11.0"
         app_version: 2.11.0
         chart_name: aws-load-balancer-controller
